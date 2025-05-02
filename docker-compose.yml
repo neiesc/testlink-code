@@ -27,8 +27,7 @@ services:
     - NODE_TLS_REJECT_UNAUTHORIZED=0
 
   testlink-app: &testlink-app
-    image: testlink:2.0.0
-    build: .
+    image: ghcr.io/neiesc/testlink-code:2.0.0-20220827-PHP8.1-neiesc
     restart: unless-stopped
     depends_on:
       testlink-mysql:
