@@ -292,10 +292,12 @@ class TestlinkXMLRPCServer extends IXR_Server {
         $this->args = $args;
 
         if(isset( $this->args[self::$testProjectNameParamName] ) && ! isset( $this->args[self::$testProjectIDParamName] )) {
-            $tprojMgr = new testproject( $this->dbObj );
             $name = trim( $this->args[self::$testProjectNameParamName] );
-            $info = current( $this->tprojectMgr->get_by_name( $name ) );
-            $this->args[self::$testProjectIDParamName] = $info['id'];
+            $projects = $this->tprojectMgr->get_by_name( $name );
+            if (! is_null( $projects )) {
+                $info = current( $projects );
+                $this->args[self::$testProjectIDParamName] = $info['id'];
+            }
         }
     }
 
@@ -2668,12 +2670,12 @@ class TestlinkXMLRPCServer extends IXR_Server {
 
         if($status_ok) {
             // This check is needed only if test plan has platforms
-            $platformSet = $this->tplanMgr->getPlatforms( $this->args[self::$testPlanIDParamName], array(
+            $platformSet = (array)$this->tplanMgr->getPlatforms( $this->args[self::$testPlanIDParamName], array(
                     'outputFormat' => 'map'
             ) );
             $targetPlatform = null;
 
-            if(! is_null( $platformSet )) {
+            if(count($platformSet) > 0) {
                 $status_ok = $this->checkPlatformIdentity( $this->args[self::$testPlanIDParamName], $platformSet, $msg_prefix );
                 if($status_ok) {
                     $targetPlatform[$this->args[self::$platformIDParamName]] = $platformSet[$this->args[self::$platformIDParamName]];
@@ -3552,8 +3554,8 @@ class TestlinkXMLRPCServer extends IXR_Server {
             $opt = array(
                     'outputFormat' => 'mapAccessByID'
             );
-            $platformSet = $this->tplanMgr->getPlatforms( $tplan_id, $opt );
-            $hasPlatforms = ! is_null( $platformSet );
+            $platformSet = (arrya)$this->tplanMgr->getPlatforms( $tplan_id, $opt );
+            $hasPlatforms = (count( $platformSet ) > 0);
             $hasPlatformIDArgs = $this->_isParamPresent( self::$platformIDParamName );
 
             if($hasPlatforms) {

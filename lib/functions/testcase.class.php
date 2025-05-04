@@ -9492,6 +9492,7 @@ class testcase extends tlObjectWithAttachments {
           $s2w = '';
         }
 
+        $safeID['platform_id'] = ($safeID['platform_id'] == -1) ? 0 : $safeID['platform_id'];
         $sql = " INSERT INTO {$this->tables['execution_tcsteps_wip']} 
                  (tcstep_id,testplan_id,platform_id,build_id,tester_id,
                  notes,status) VALUES 
