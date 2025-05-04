@@ -15,7 +15,12 @@ require_once('../functions/attachments.inc.php');
 
 // This way can be called without _SESSION, 
 // this is useful for reports
-testlinkInitPage($db,false,true);
+// testlinkInitPage($db,false,true);
+// But it seems is creating this CVE https://nvd.nist.gov/vuln/detail/CVE-2022-35195
+//
+// Using proposed fix by user danzone on mantis.testlink.org
+testlinkInitPage($db);
+
 
 $args = init_args($db);
 if ($args->id) {
