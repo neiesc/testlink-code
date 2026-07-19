@@ -686,10 +686,13 @@ function getTestSpecFromNode(&$dbHandler,&$tcaseMgr,&$linkedItems,$masterContain
   $key2loop = null;
   $useAllowed = false;
   
-  $nullCheckFilter = array('tcase_id' => false, 
-                           'importance' => false,
-                           'tcase_name' => false, 
-                           'cfields' => false, 'status' => false);
+  $nullCheckFilter = [
+    'tcase_id' => false, 
+    'importance' => false,
+    'tcase_name' => false, 
+    'cfields' => false, 
+    'status' => false
+  ];
 
   $zeroNullCheckFilter = array('execution_type' => false);
   $useFilter = array('keyword_id' => false, 'platform_id' => false) 
@@ -703,15 +706,17 @@ function getTestSpecFromNode(&$dbHandler,&$tcaseMgr,&$linkedItems,$masterContain
   }
 
   // more specif analisys
-  if( ($useFilter['status']=($filters['status'][0] > 0)) ) {
-    $applyFilters = true;
-    $filtersByValue['status'] = array_flip((array)$filters['status']);
+  if (is_null($filters)) {
+    if( ($useFilter['status']=($filters['status'][0] > 0)) ) {
+      $applyFilters = true;
+      $filtersByValue['status'] = array_flip((array)$filters['status']);
+    }
+    
+    if( ($useFilter['importance']=($filters['importance'][0] > 0)) ) {
+      $applyFilters = true;
+      $filtersByValue['importance'] = array_flip((array)$filters['importance']);
+    }    
   }
-  
-  if( ($useFilter['importance']=($filters['importance'][0] > 0)) ) {
-    $applyFilters = true;
-    $filtersByValue['importance'] = array_flip((array)$filters['importance']);
-  }  
 
 
   foreach($zeroNullCheckFilter as $key => $value) {
@@ -745,20 +750,22 @@ function getTestSpecFromNode(&$dbHandler,&$tcaseMgr,&$linkedItems,$masterContain
   }  
 
   $tcpl_map = null;
-  if(($useFilter['platforms']=$filters['platform_id'][0] > 0)) {
-    $applyFilters = true;
-    switch ($specViewType) {
-      case 'testplan':
-        $tobj_mgr = new testplan($dbHandler); 
-        $tcpl_map = $tobj_mgr->getPlatformsLinkedTCVersions($masterContainerId,
-                                $filters['platforms']);
-      break;
+  if (is_null($filters)) {
+    if(($useFilter['platforms']=$filters['platform_id'][0] > 0)) {
+      $applyFilters = true;
+      switch ($specViewType) {
+        case 'testplan':
+          $tobj_mgr = new testplan($dbHandler); 
+          $tcpl_map = $tobj_mgr->getPlatformsLinkedTCVersions($masterContainerId,
+                                  $filters['platforms']);
+        break;
 
-      default:
-        $tcpl_map = $tobj_mgr->getPlatformsLatestTCV($masterContainerId,
-                                $filters['platforms']);
-      break;
-    }
+        default:
+          $tcpl_map = $tobj_mgr->getPlatformsLatestTCV($masterContainerId,
+                                  $filters['platforms']);
+        break;
+      }
+    }  
   }  
 
 
@@ -1169,16 +1176,16 @@ function buildSkeleton($id,$name,$config,&$test_spec,&$platforms)
       //    |__ TCZ1
       //
       //               
-      if( $tcase_memory['parent_id'] != $current['parent_id'] )
-      {
-        if( !is_null($tcase_memory) )
-        {
+      if( is_null($tcase_memory) ) {
+        $tcase_memory=$current;
+      } else {
+        if( $tcase_memory['parent_id'] != $current['parent_id'] ) {
           $pidx = $hash_id_pos[$tcase_memory['parent_id']];
           $xdx=$out[$pidx]['testsuite']['id'];
           $tsuite_tcqty[$xdx]=$out[$pidx]['testcase_qty'];
-        }
-        $tcase_memory=$current;
-      }  
+          $tcase_memory=$current;
+        }  
+      }
     }
     else
     {

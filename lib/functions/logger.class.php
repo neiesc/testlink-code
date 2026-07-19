@@ -1406,9 +1406,14 @@ class tlMailLogger extends tlObjectWithDB
  */
 function watchPHPErrors($errno, $errstr, $errfile, $errline)
 {
-  $errors = array(E_USER_NOTICE => "E_USER_NOTICE",E_USER_WARNING => "E_USER_WARNING",
-                  E_USER_NOTICE => "E_USER_NOTICE",E_ERROR => "E_ERROR",
-                  E_WARNING => "E_WARNING",E_NOTICE => "E_NOTICE",E_STRICT => "E_STRICT");
+  $errors = [
+    E_USER_NOTICE => "E_USER_NOTICE",
+    E_USER_WARNING => "E_USER_WARNING",
+    E_USER_ERROR => "E_USER_ERROR",
+    E_ERROR => "E_ERROR",
+    E_WARNING => "E_WARNING",
+    E_NOTICE => "E_NOTICE"
+  ];
 
   /*
    1 E_ERROR, 2 E_WARNING, 4 E_PARSE, 8 E_NOTICE, 16  E_CORE_ERROR, 
@@ -1429,14 +1434,7 @@ function watchPHPErrors($errno, $errstr, $errfile, $errline)
     // 
     if( ($errno == E_NOTICE && strpos($errstr,"unserialize()") !== false) ||
         ($errno == E_NOTICE && strpos($errstr,"ob_end_clean()") !== false) ||
-        ($errno == E_STRICT && strpos($errstr,"@strftime()") !== false) ||
-        ($errno == E_STRICT && strpos($errstr,"mktime()") !== false) ||
-        ($errno == E_STRICT && strpos($errstr,"date()") !== false) ||
-        ($errno == E_STRICT && strpos($errstr,"strtotime()") !== false) ||
         ($errno == E_WARNING && strpos($errstr,"filemtime") !== false) ||
-        ($errno == E_STRICT && strpos($errfile,"xmlrpc.inc") !== false) ||
-        ($errno == E_STRICT && strpos($errfile,"xmlrpcs.inc") !== false) ||
-        ($errno == E_STRICT && strpos($errfile,"xmlrpc_wrappers.inc") !== false) ||
         ($errno == E_NOTICE && strpos($errfile,"Config_File.class.php") !== false) ||
         ($errno == E_WARNING && strpos($errfile,"smarty_internal_write_file.php") !== false) ||
         (strpos($errfile,"Smarty_Compiler.class.php") !== false)

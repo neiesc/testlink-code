@@ -1097,7 +1097,7 @@ function do_remote_execution(&$dbHandler,$context)
         $tryWrite = false;
       break;
         
-      case 'ok';
+      case 'ok':
         $tryWrite = true;
       break;  
     }

@@ -15,7 +15,7 @@
 require('../../config.inc.php');
 
 // Must be included BEFORE common.php
-require_once('../../third_party/codeplex/PHPExcel.php');   
+require_once('../../vendor/autoload.php');   
 
 require_once('common.php');
 require_once('displayMgr.php');
@@ -386,7 +386,7 @@ function createSpreadsheet($gui,$args,$media) {
   $cellRange = range('A','Z');
   $style = initStyleSpreadsheet();
 
-  $objPHPExcel = new PHPExcel();
+  $objPHPExcel = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
   $lines2write = xlsStepOne($objPHPExcel,$style,$lbl,$gui);
 
   // Step 2
@@ -437,8 +437,8 @@ function createSpreadsheet($gui,$args,$media) {
   // Final step
   $objPHPExcel->setActiveSheetIndex(0);
   
-  $xlsType = 'Excel5';                               
-  $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, $xlsType);
+  $xlsType = 'Xls';                               
+  $objWriter = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($objPHPExcel, $xlsType);
 
   $codex = 'neverRunByPP';   
   $tmpfname = tempnam(config_get('temp_dir'),"$codex.tmp");
@@ -502,9 +502,9 @@ function initStyleSpreadsheet() {
   $sty = array();
   $sty['ReportContext'] = array('font' => array('bold' => true));
   $sty['DataHeader'] = array('font' => array('bold' => true),
-                           'borders' => array('outline' => array('style' => PHPExcel_Style_Border::BORDER_MEDIUM),
-                                              'vertical' => array('style' => PHPExcel_Style_Border::BORDER_THIN)),
-                           'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,
+                           'borders' => array('outline' => array('style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM),
+                                              'vertical' => array('style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN)),
+                           'fill' => array('type' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                                            'startcolor' => array( 'argb' => 'FF9999FF'))
                            );
 

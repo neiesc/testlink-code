@@ -1464,9 +1464,9 @@ function getWebEditorCfg($feature='all')
 function downloadXls($fname,$xlsType,$gui,$filePrefix)
 {
   $sets = array();
-  $sets['Excel2007'] = array('ext' => '.xlsx', 
+  $sets['Xlsx'] = array('ext' => '.xlsx', 
                              'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-  $sets['Excel5'] = array('ext' => '.xls', 
+  $sets['Xls'] = array('ext' => '.xls', 
                           'Content-Type' => 'application/vnd.ms-excel');
 
 

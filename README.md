@@ -1,7 +1,16 @@
 # IMPORTANT NOTICE
 1.9.20 will be the last version of the 1.9.x family.  
-Next TestLink version will 2.x with a new UX based on the Dashio - Bootstrap Admin Template (https://templatemag.com/dashio-bootstrap-admin-template/)
 
+## Update 2025
+With the help of AI code has been refactored to:
+- test with PHP 8.x, currently 8.5.0 on Windows
+- update the excel package
+- resolve some PHP compatibilities issues.
+
+## Version 2.x
+Next TestLink version will 2.x with a new UX based on 
+the Dashio - Bootstrap Admin Template (https://templatemag.com/dashio-bootstrap-admin-template/)
+This was the idea but @20251206 I'm still working on it.
 
 
 # TestLink 1.9.20 Raijin - Read me

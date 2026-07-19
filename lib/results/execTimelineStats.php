@@ -9,7 +9,7 @@
 require('../../config.inc.php');
 
 // Must be included BEFORE common.php
-require_once('../../third_party/codeplex/PHPExcel.php');
+require_once('../../vendor/autoload.php');
 
 require_once('common.php');
 require_once('displayMgr.php');
@@ -184,7 +184,7 @@ function createSpreadsheet($gui,$args,&$tplanMgr)
     break;
   }
 
-  $objPHPExcel = new PHPExcel();
+  $objPHPExcel = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
   $lines2write = xlsStepOne($objPHPExcel,$style,$lbl,$gui);
   $startingRow = count($lines2write); // MAGIC
   $dataHeader = array();
@@ -226,8 +226,8 @@ function createSpreadsheet($gui,$args,&$tplanMgr)
   // Final step
   $tmpfname = tempnam(config_get('temp_dir'),"TL_ExecTimelineStats.tmp");
   $objPHPExcel->setActiveSheetIndex(0);
-  $xlsType = 'Excel5';                               
-  $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, $xlsType);  
+  $xlsType = 'Xls';                               
+  $objWriter = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($objPHPExcel, $xlsType);  
   $objWriter->save($tmpfname);
   
   downloadXls($tmpfname,$xlsType,$gui,'TL_ExecTimelineStats_');
@@ -285,10 +285,10 @@ function initStyleSpreadsheet() {
     array('font' => array('bold' => true),
           'borders' => 
              array('outline' => 
-              array('style' => PHPExcel_Style_Border::BORDER_MEDIUM),
+              array('style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM),
           'vertical' => 
-              array('style' => PHPExcel_Style_Border::BORDER_THIN)),
-          'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,
+              array('style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN)),
+          'fill' => array('type' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
           'startcolor' => array( 'argb' => 'FF9999FF'))
     );
 
@@ -296,10 +296,10 @@ function initStyleSpreadsheet() {
     array('borders' => 
             array(
               'outline' => 
-               array('style' => PHPExcel_Style_Border::BORDER_THIN),
+               array('style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN),
               'vertical' => 
-               array('style' => PHPExcel_Style_Border::BORDER_THIN)),
-          'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,
+               array('style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN)),
+          'fill' => array('type' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
           'startcolor' => array( 'argb' => 'FFFFFFFF'))
     );
 
@@ -307,10 +307,10 @@ function initStyleSpreadsheet() {
     array('borders' => 
             array(
               'outline' => 
-               array('style' => PHPExcel_Style_Border::BORDER_THIN),
+               array('style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN),
               'vertical' => 
-               array('style' => PHPExcel_Style_Border::BORDER_THIN)),
-          'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,
+               array('style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN)),
+          'fill' => array('type' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
           'startcolor' => array( 'argb' => 'DCDCDCDC'))
     );
 
